@@ -16,8 +16,17 @@
         .timeline { border-left: 2px solid #3b82f6; position: relative; }
         .timeline-item { position: relative; padding-left: 20px; margin-bottom: 30px; }
         .timeline-item::before { content: ''; position: absolute; left: -11px; top: 0; width: 20px; height: 20px; background: #3b82f6; border-radius: 50%; border: 3px solid #e0f2f1; }
-        .timeline-item-active::before { background: #ef4444; border: 3px solid #fee2e2; }
+        .timeline-item-active::before { content: ''; background: #ef4444; border: 3px solid #fee2e2; }
         .hidden-section { display: none; }
+        /* 響應式導覽列的額外樣式，確保手機版點擊後彈出 */
+        .mobile-menu-active { display: block !important; }
+        
+        /* 確保 nav-link 基礎樣式適用於手機版 */
+        .nav-link { 
+            display: block; /* 讓手機版選單垂直排列 */
+            width: 100%;
+            text-align: left;
+        }
     </style>
 </head>
 <body class="bg-gray-50 font-sans">
@@ -25,11 +34,11 @@
     <nav class="bg-white shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
-                <div class="flex">
+                <div class="flex items-center">
                     <div class="flex-shrink-0 flex items-center">
                         <span class="text-xl font-bold text-gray-800">🇻🇳 峴港會安慢活之旅</span>
                     </div>
-                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8" id="desktop-menu">
                         <a href="#summary" class="nav-link text-gray-500 hover:text-gray-900 border-b-2 border-transparent hover:border-blue-500 px-3 py-2 text-sm font-medium transition duration-150">行程總覽</a>
                         <a href="#transport" class="nav-link text-gray-500 hover:text-gray-900 border-b-2 border-transparent hover:border-blue-500 px-3 py-2 text-sm font-medium transition duration-150">交通住宿</a>
                         <a href="#daily-plan" class="nav-link text-gray-500 hover:text-gray-900 border-b-2 border-transparent hover:border-blue-500 px-3 py-2 text-sm font-medium transition duration-150">每日行程</a>
@@ -37,7 +46,23 @@
                         <a href="#prep" class="nav-link text-gray-500 hover:text-gray-900 border-b-2 border-transparent hover:border-blue-500 px-3 py-2 text-sm font-medium transition duration-150">行前準備</a>
                     </div>
                 </div>
+                <div class="-mr-2 flex items-center sm:hidden">
+                    <button type="button" id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
             </div>
+        </div>
+
+        <div class="hidden sm:hidden bg-white shadow-lg pb-2" id="mobile-menu">
+            <a href="#summary" class="nav-link block text-gray-600 hover:bg-blue-50 hover:text-blue-600 px-3 py-2 text-base font-medium">行程總覽</a>
+            <a href="#transport" class="nav-link block text-gray-600 hover:bg-blue-50 hover:text-blue-600 px-3 py-2 text-base font-medium">交通住宿</a>
+            <a href="#daily-plan" class="nav-link block text-gray-600 hover:bg-blue-50 hover:text-blue-600 px-3 py-2 text-base font-medium">每日行程</a>
+            <a href="#food-map" class="nav-link block text-gray-600 hover:bg-blue-50 hover:text-blue-600 px-3 py-2 text-base font-medium">美食地圖</a>
+            <a href="#prep" class="nav-link block text-gray-600 hover:bg-blue-50 hover:text-blue-600 px-3 py-2 text-base font-medium">行前準備</a>
         </div>
     </nav>
 
@@ -117,7 +142,7 @@
                 <div class="timeline-item">
                     <p class="font-semibold text-gray-900">20:00 - 20:30</p>
                     <p class="text-gray-600">機場 → **voco Ma Belle Danang** (Check-in)</p>
-                    <p class="text-sm text-gray-500">建議路線: <a href="https://www.google.com/maps/dir/Da+Nang+International+Airport,+Hòa+Thuận+Tây,+Hải+Châu,+Đà+Nẵng,+Vietnam/voco+Ma+Belle+Danang,+168+Võ+Nguyên+Giáp,+Phước+Mỹ,+Sơn+Trà,+Đà+Nẵng,+Vietnam" target="_blank" class="text-blue-500 hover:underline">[Google 地圖]</a> | 交通: Grab/計程車 (約 20 分鐘) | 預估費用: VND 150,000</p>
+                    <p class="text-sm text-gray-500">建議路線: <a href="https://www.google.com/maps/dir/Da+Nang+International+Airport+(DAD)/voco+Ma+Belle+Danang" target="_blank" class="text-blue-500 hover:underline">[Google 地圖]</a> | 交通: Grab/計程車 (約 20 分鐘) | 預估費用: VND 150,000</p>
                 </div>
                 <div class="timeline-item">
                     <p class="font-semibold text-gray-900">21:30 - 22:30</p>
@@ -140,12 +165,12 @@
                 <div class="timeline-item">
                     <p class="font-semibold text-gray-900">14:00 - 17:00</p>
                     <p class="text-gray-600">**SPA 按摩** (建議預約)** / 美溪沙灘漫步**</p>
-                    <p class="text-sm text-gray-500">地點: <a href="https://www.google.com/maps/search/?api=1&query=voco+Ma+Belle+Danang+Spa" target="_blank" class="text-blue-500 hover:underline">[Google 地圖]</a>周邊按摩店 | 停留時間: 3 小時</p>
+                    <p class="text-sm text-gray-500">地點: <a href="https://www.google.com/maps/search/?api=1&query=My+Khe+Beach+spa+massage" target="_blank" class="text-blue-500 hover:underline">[Google 地圖]</a>周邊按摩店 | 停留時間: 3 小時</p>
                 </div>
                 <div class="timeline-item">
                     <p class="font-semibold text-gray-900">19:00 - 21:00</p>
                     <p class="text-gray-600">晚餐：峴港海鮮大排檔 (例如：**Be Man Seafood**)</p>
-                    <p class="text-sm text-gray-500">地點: <a href="https://www.google.com/maps/search/?api=1&query=Bé+Mặn" target="_blank" class="text-blue-500 hover:underline">[Google 地圖]</a></p>
+                    <p class="text-sm text-gray-500">地點: <a href="https://www.google.com/maps/search/?api=1&query=Be+Man+Seafood+Da+Nang" target="_blank" class="text-blue-500 hover:underline">[Google 地圖]</a></p>
                 </div>
             </div>
             
@@ -153,13 +178,13 @@
             <div class="timeline">
                 <div class="timeline-item timeline-item-active">
                     <p class="font-semibold text-gray-900">10:30 - 11:30</p>
-                    <p class="text-gray-600">voco Check-out → Four Points 寄放大行李 → **僅攜帶輕便行李**</p>
-                    <p class="text-sm text-gray-500">建議路線: voco → <a href="https://www.google.com/maps/search/?api=1&query=Four+Points+by+Sheraton+Danang" target="_blank" class="text-blue-500 hover:underline">[Four Points 寄放]</a> (請務必拿取寄放牌)</p>
+                    <p class="text-gray-600">voco Check-out → **Four Points 寄放大行李** → **僅攜帶輕便行李**</p>
+                    <p class="text-sm text-gray-500">建議路線: voco → <a href="https://www.google.com/maps/dir/voco+Ma+Belle+Danang/Four+Points+by+Sheraton+Danang" target="_blank" class="text-blue-500 hover:underline">[Four Points 寄放]</a> (請務必拿取寄放牌)</p>
                 </div>
                 <div class="timeline-item">
                     <p class="font-semibold text-gray-900">11:30 - 12:30</p>
                     <p class="text-gray-600">**Four Points → La Charm Hoi An Hotel**</p>
-                    <p class="text-sm text-gray-500">建議路線: <a href="https://www.google.com/maps/dir/Four+Points+by+Sheraton+Danang,+118-120+Võ+Nguyên+Giáp,+Mân+Thái,+Sơn+Trà,+Đà+Nẵng,+Vietnam/La+Charm+Hoi+An+Hotel+%26+Spa,+228+Nguyễn+Duy+Hiệu,+Cẩm+Châu,+Hội+An,+Quảng+Nam,+Vietnam" target="_blank" class="text-blue-500 hover:underline">[Google 地圖]</a> | 交通: Grab/計程車 (約 50 分鐘) | 預估費用: VND 400,000</p>
+                    <p class="text-sm text-gray-500">建議路線: <a href="https://www.google.com/maps/dir/Four+Points+by+Sheraton+Danang/La+Charm+Hoi+An+Hotel" target="_blank" class="text-blue-500 hover:underline">[Google 地圖]</a> | 交通: Grab/計程車 (約 50 分鐘) | 預估費用: VND 400,000</p>
                 </div>
                 <div class="timeline-item">
                     <p class="font-semibold text-gray-900">14:00 - 17:00</p>
@@ -187,7 +212,7 @@
                 <div class="timeline-item">
                     <p class="font-semibold text-gray-900">11:00 - 12:30</p>
                     <p class="text-gray-600">La Charm Check-out → **Four Points** (Check-in & 領行李)</p>
-                    <p class="text-sm text-gray-500">活動: 回到 Four Points 領回大行李，正式入住海景房</p>
+                    <p class="text-sm text-gray-500">交通: Grab/計程車 (約 45 分鐘) | 活動: 回到 Four Points 領回大行李，正式入住海景房</p>
                 </div>
                 <div class="timeline-item">
                     <p class="font-semibold text-gray-900">13:30 - 14:30</p>
@@ -252,33 +277,33 @@
         <section id="food-map" class="page-section bg-white p-6 rounded-lg shadow-xl mb-8 hidden-section">
             <h2 class="text-3xl font-extrabold text-gray-900 mb-4 border-b-2 pb-2 text-blue-600">🍽️ 美食地圖 (互動篩選)</h2>
 
-            <div class="mb-4 flex space-x-3" id="food-filter">
-                <button data-filter="all" class="filter-btn bg-blue-500 text-white px-4 py-2 rounded-full text-sm hover:bg-blue-600 transition">全部美食</button>
-                <button data-filter="local" class="filter-btn bg-gray-200 text-gray-800 px-4 py-2 rounded-full text-sm hover:bg-gray-300 transition">當地特色</button>
-                <button data-filter="seafood" class="filter-btn bg-gray-200 text-gray-800 px-4 py-2 rounded-full text-sm hover:bg-gray-300 transition">海鮮/西餐</button>
-                <button data-filter="coffee" class="filter-btn bg-gray-200 text-gray-800 px-4 py-2 rounded-full text-sm hover:bg-gray-300 transition">咖啡/甜點</button>
+            <div class="mb-4 flex space-x-3 overflow-x-auto pb-2" id="food-filter">
+                <button data-filter="all" class="filter-btn bg-blue-500 text-white flex-shrink-0 px-4 py-2 rounded-full text-sm hover:bg-blue-600 transition">全部美食</button>
+                <button data-filter="local" class="filter-btn bg-gray-200 text-gray-800 flex-shrink-0 px-4 py-2 rounded-full text-sm hover:bg-gray-300 transition">當地特色</button>
+                <button data-filter="seafood" class="filter-btn bg-gray-200 text-gray-800 flex-shrink-0 px-4 py-2 rounded-full text-sm hover:bg-gray-300 transition">海鮮/西餐</button>
+                <button data-filter="coffee" class="filter-btn bg-gray-200 text-gray-800 flex-shrink-0 px-4 py-2 rounded-full text-sm hover:bg-gray-300 transition">咖啡/甜點</button>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="food-list">
                 <div class="food-item p-4 bg-red-50 rounded-lg shadow" data-category="local">
                     <h4 class="font-bold text-lg text-red-700">高樓麵 (Cao Lầu) - 會安</h4>
                     <p class="text-sm text-gray-700">會安獨有，麵條有嚼勁，配料豐富。</p>
-                    <a href="https://www.google.com/maps/search/?api=1&query=Thanh+Cao+Lầu,+Hội+An" target="_blank" class="text-blue-500 hover:underline text-xs">[Google 地圖: Thanh Cao Lầu]</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Thanh+Cao+L%E1%BB%93u" target="_blank" class="text-blue-500 hover:underline text-xs">[Google 地圖: Thanh Cao Lầu]</a>
                 </div>
                 <div class="food-item p-4 bg-red-50 rounded-lg shadow" data-category="local">
                     <h4 class="font-bold text-lg text-red-700">白玫瑰 (Bánh Bao Vac) - 會安</h4>
                     <p class="text-sm text-gray-700">薄皮蝦餃，形狀似玫瑰，口感Q彈。</p>
-                    <a href="https://www.google.com/maps/search/?api=1&query=White+Rose+Restaurant,+Hội+An" target="_blank" class="text-blue-500 hover:underline text-xs">[Google 地圖: White Rose Restaurant]</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=White+Rose+Restaurant+Hoi+An" target="_blank" class="text-blue-500 hover:underline text-xs">[Google 地圖: White Rose Restaurant]</a>
                 </div>
                 <div class="food-item p-4 bg-blue-50 rounded-lg shadow" data-category="seafood">
                     <h4 class="font-bold text-lg text-blue-700">Be Man 海鮮大排檔 - 峴港</h4>
                     <p class="text-sm text-gray-700">當地熱門海鮮店，海鮮新鮮且平價。</p>
-                    <a href="https://www.google.com/maps/search/?api=1&query=Bé+Mặn" target="_blank" class="text-blue-500 hover:underline text-xs">[Google 地圖: Bé Mặn]</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Be+Man+Seafood+Da+Nang" target="_blank" class="text-blue-500 hover:underline text-xs">[Google 地圖: Bé Mặn]</a>
                 </div>
                 <div class="food-item p-4 bg-blue-50 rounded-lg shadow" data-category="seafood">
                     <h4 class="font-bold text-lg text-blue-700">Pizza 4P's - 峴港</h4>
                     <p class="text-sm text-gray-700">知名日式創意披薩，品質穩定，適合換換口味。</p>
-                    <a href="https://www.google.com/maps/search/?api=1&query=Pizza+4P's+Da+Nang" target="_blank" class="text-blue-500 hover:underline text-xs">[Google 地圖: Pizza 4P's]</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Pizza+4P%27s+Da+Nang" target="_blank" class="text-blue-500 hover:underline text-xs">[Google 地圖: Pizza 4P's]</a>
                 </div>
                 <div class="food-item p-4 bg-green-50 rounded-lg shadow" data-category="coffee">
                     <h4 class="font-bold text-lg text-green-700">Cong Caphe (網紅咖啡) - 峴港/會安</h4>
@@ -286,9 +311,9 @@
                     <a href="https://www.google.com/maps/search/?api=1&query=Cong+Caphe+Da+Nang" target="_blank" class="text-blue-500 hover:underline text-xs">[Google 地圖: 峴港分店]</a>
                 </div>
                 <div class="food-item p-4 bg-green-50 rounded-lg shadow" data-category="coffee">
-                    <h4 class="font-bold text-lg text-green-700">A Little Hoian Coffee & Tea</h4>
+                    <h4 class="font-bold text-lg text-green-700">Hội An Roastery (咖啡與茶)</h4>
                     <p class="text-sm text-gray-700">會安古鎮周邊的寧靜咖啡館，適合下午茶。</p>
-                    <a href="https://www.google.com/maps/search/?api=1&query=A+Little+Hoian+Coffee+%26+Tea" target="_blank" class="text-blue-500 hover:underline text-xs">[Google 地圖: A Little Hoian]</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Hoi+An+Roastery" target="_blank" class="text-blue-500 hover:underline text-xs">[Google 地圖: Hoi An Roastery]</a>
                 </div>
             </div>
         </section>
@@ -329,38 +354,57 @@
             const navLinks = document.querySelectorAll('.nav-link');
             const pageSections = document.querySelectorAll('.page-section');
             const foodFilter = document.getElementById('food-filter');
-            const foodList = document.getElementById('food-list');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
 
-            // 1. SPA Navigation Logic
-            navLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const targetId = link.getAttribute('href').substring(1);
-                    
-                    // Hide all sections
-                    pageSections.forEach(section => {
-                        section.classList.add('hidden-section');
-                    });
-                    
-                    // Show target section
-                    document.getElementById(targetId).classList.remove('hidden-section');
-                    
-                    // Update active state
-                    navLinks.forEach(nav => nav.classList.remove('border-blue-500', 'text-gray-900'));
-                    link.classList.add('border-blue-500', 'text-gray-900');
-                    
-                    // Scroll to top of content
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-
-                    // Rerender chart if transport section is active
-                    if (targetId === 'transport') {
-                        renderTransportChart();
-                    }
+            // 1. SPA Navigation Logic & Section Switching
+            function handleNavLinkClick(e) {
+                e.preventDefault();
+                const targetId = e.currentTarget.getAttribute('href').substring(1);
+                
+                // Hide mobile menu if visible
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                }
+                
+                // Hide all sections
+                pageSections.forEach(section => {
+                    section.classList.add('hidden-section');
                 });
+                
+                // Show target section
+                document.getElementById(targetId).classList.remove('hidden-section');
+                
+                // Update active state (only for desktop links to maintain consistency)
+                document.getElementById('desktop-menu').querySelectorAll('.nav-link').forEach(nav => {
+                    nav.classList.remove('border-blue-500', 'text-gray-900');
+                    nav.classList.add('text-gray-500');
+                });
+                // Find and activate the corresponding desktop link
+                document.getElementById('desktop-menu').querySelector(`a[href="#${targetId}"]`)?.classList.add('border-blue-500', 'text-gray-900');
+                
+                // Scroll to top of content
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                // Rerender chart if transport section is active
+                if (targetId === 'transport') {
+                    renderTransportChart();
+                }
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', handleNavLinkClick);
             });
 
+            // 1b. Mobile Menu Toggle Logic
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+
             // Initially activate the first section
-            document.querySelector('.nav-link').click();
+            document.querySelector('#desktop-menu a:first-child').click();
+
 
             // 2. 美食地圖篩選器 Logic
             foodFilter.addEventListener('click', (e) => {
@@ -390,9 +434,16 @@
             document.querySelector('[data-filter="all"]').click();
 
             // 3. Chart.js (交通時間與費用比較圖)
+            let transportChartInstance = null;
             function renderTransportChart() {
                 const ctx = document.getElementById('transportChart').getContext('2d');
-                new Chart(ctx, {
+                
+                // Destroy existing chart instance if it exists
+                if (transportChartInstance) {
+                    transportChartInstance.destroy();
+                }
+
+                transportChartInstance = new Chart(ctx, {
                     type: 'bar',
                     data: {
                         labels: ['機場↔voco/FP', 'voco↔FP (Day 3)', 'FP↔會安 (單程)', '市區單程 Grab'],
