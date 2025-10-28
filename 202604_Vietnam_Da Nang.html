@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>徐/蔡 峴港會安輕鬆慢活六天五夜 - 專業旅遊規劃</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* 自定義滾動條樣式，增強專業感 */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        /* Timeline 樣式 */
+        .timeline { border-left: 2px solid #3b82f6; position: relative; }
+        .timeline-item { position: relative; padding-left: 20px; margin-bottom: 30px; }
+        .timeline-item::before { content: ''; position: absolute; left: -11px; top: 0; width: 20px; height: 20px; background: #3b82f6; border-radius: 50%; border: 3px solid #e0f2f1; }
+        .timeline-item-active::before { background: #ef4444; border: 3px solid #fee2e2; }
+        .hidden-section { display: none; }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <span class="text-xl font-bold text-gray-800">🇻🇳 峴港會安慢活之旅</span>
+                    </div>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="#summary" class="nav-link text-gray-500 hover:text-gray-900 border-b-2 border-transparent hover:border-blue-500 px-3 py-2 text-sm font-medium transition duration-150">行程總覽</a>
+                        <a href="#transport" class="nav-link text-gray-500 hover:text-gray-900 border-b-2 border-transparent hover:border-blue-500 px-3 py-2 text-sm font-medium transition duration-150">交通住宿</a>
+                        <a href="#daily-plan" class="nav-link text-gray-500 hover:text-gray-900 border-b-2 border-transparent hover:border-blue-500 px-3 py-2 text-sm font-medium transition duration-150">每日行程</a>
+                        <a href="#food-map" class="nav-link text-gray-500 hover:text-gray-900 border-b-2 border-transparent hover:border-blue-500 px-3 py-2 text-sm font-medium transition duration-150">美食地圖</a>
+                        <a href="#prep" class="nav-link text-gray-500 hover:text-gray-900 border-b-2 border-transparent hover:border-blue-500 px-3 py-2 text-sm font-medium transition duration-150">行前準備</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <section id="summary" class="page-section bg-white p-6 rounded-lg shadow-xl mb-8">
+            <h2 class="text-3xl font-extrabold text-gray-900 mb-4 border-b-2 pb-2 text-blue-600">✨ 行程總覽 | 峴港會安輕鬆慢活</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-center">
+                <div class="p-4 bg-blue-50 rounded-lg">
+                    <p class="text-sm text-gray-500">日期</p>
+                    <p class="text-lg font-semibold text-gray-800">2026/4/2 ~ 4/7 (6天5夜)</p>
+                </div>
+                <div class="p-4 bg-blue-50 rounded-lg">
+                    <p class="text-sm text-gray-500">同行成員</p>
+                    <p class="text-lg font-semibold text-gray-800">徐先生 / 蔡小姐</p>
+                </div>
+                <div class="p-4 bg-blue-50 rounded-lg">
+                    <p class="text-sm text-gray-500">旅遊風格</p>
+                    <p class="text-lg font-semibold text-gray-800">頂級舒適、輕鬆慢活 (避開趕行程)</p>
+                </div>
+                <div class="p-4 bg-blue-50 rounded-lg">
+                    <p class="text-sm text-gray-500">經費</p>
+                    <p class="text-lg font-semibold text-gray-800">依需求自定 (此為高舒適度行程)</p>
+                </div>
+            </div>
+            
+            <h3 class="text-2xl font-bold mt-6 mb-3 text-gray-700">📌 行程亮點</h3>
+            <ul class="list-disc list-inside text-gray-700 space-y-2 ml-4">
+                <li>**voco Ma Belle Danang：** 新潮設計、頂樓泳池、精緻餐點，開啟美好假期。</li>
+                <li>**Four Points by Sheraton：** 國際品牌穩定舒適，位置絕佳，方便告別日。</li>
+                <li>**La Charm Hoi An：** 精品風格，步行可達古城，完美體驗會安**燈籠夜景**。</li>
+                <li>**輕鬆換宿策略：** Day 3 行李寄放 Four Points，輕裝遊會安，避免舟車勞頓。</li>
+            </ul>
+        </section>
+
+        <section id="transport" class="page-section bg-white p-6 rounded-lg shadow-xl mb-8 hidden-section">
+            <h2 class="text-3xl font-extrabold text-gray-900 mb-4 border-b-2 pb-2 text-blue-600">✈️ 交通與住宿安排</h2>
+            
+            <h3 class="text-2xl font-bold mt-4 mb-3 text-gray-700">🏨 住宿明細</h3>
+            <div class="space-y-4">
+                <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                    <p class="font-semibold text-lg text-green-700">Day 1-2 (4/2-4/3): voco Ma Belle Danang (2 晚)</p>
+                    <p class="text-sm text-gray-600">地址: 168 Vo Nguyen Giap St, Phuoc My Ward, Son Tra Dist, Da Nang</p>
+                    <a href="https://www.google.com/maps/search/?api=1&query=voco+Ma+Belle+Danang" target="_blank" class="text-blue-500 hover:underline text-sm">[Google 地圖]</a>
+                </div>
+                <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-500">
+                    <p class="font-semibold text-lg text-yellow-700">Day 3 (4/4): La Charm Hoi An Hotel & Spa (1 晚)</p>
+                    <p class="text-sm text-gray-600">地址: 228 Nguyen Duy Hieu, Cam Chau, Hoi An, Quang Nam</p>
+                    <a href="https://www.google.com/maps/search/?api=1&query=La+Charm+Hoi+An+Hotel+%26+Spa" target="_blank" class="text-blue-500 hover:underline text-sm">[Google 地圖]</a>
+                </div>
+                <div class="bg-indigo-50 p-4 rounded-lg border-l-4 border-indigo-500">
+                    <p class="font-semibold text-lg text-indigo-700">Day 4-5 (4/5-4/6): Four Points by Sheraton Danang (2 晚)</p>
+                    <p class="text-sm text-gray-600">地址: 118-120 Vo Nguyen Giap St, Man Thai Ward, Son Tra Dist, Da Nang</p>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Four+Points+by+Sheraton+Danang" target="_blank" class="text-blue-500 hover:underline text-sm">[Google 地圖]</a>
+                </div>
+            </div>
+
+            <h3 class="text-2xl font-bold mt-6 mb-3 text-gray-700">🚕 交通比較 (Grab App 為主)</h3>
+            <div class="p-4 bg-gray-100 rounded-lg">
+                <canvas id="transportChart"></canvas>
+            </div>
+            <div class="text-sm text-gray-600 mt-2">
+                <p>💡 **交通提示：** 峴港與會安之間建議使用 Grab (類似 Uber) App 或飯店安排的計程車，確保價格透明及舒適。</p>
+                <p>💡 **計程車費：** 預估費用為參考，實際以 Grab 或當地計程車跳表為準 (越南盾 VND 換算)。</p>
+            </div>
+        </section>
+
+        <section id="daily-plan" class="page-section bg-white p-6 rounded-lg shadow-xl mb-8 hidden-section">
+            <h2 class="text-3xl font-extrabold text-gray-900 mb-6 border-b-2 pb-2 text-blue-600">🗓️ 每日行程 (時間軸)</h2>
+
+            <h3 class="text-2xl font-bold text-gray-700 mb-4 border-l-4 border-red-500 pl-3">Day 1 (4/2): 晚間抵達與 voco Check-in</h3>
+            <div class="timeline">
+                <div class="timeline-item timeline-item-active">
+                    <p class="font-semibold text-gray-900">19:00 - 20:00</p>
+                    <p class="text-gray-600">抵達峴港國際機場 (DAD)</p>
+                    <p class="text-sm text-blue-500">停留時間: 1 小時 (通關)</p>
+                </div>
+                <div class="timeline-item">
+                    <p class="font-semibold text-gray-900">20:00 - 20:30</p>
+                    <p class="text-gray-600">機場 → **voco Ma Belle Danang** (Check-in)</p>
+                    <p class="text-sm text-gray-500">建議路線: <a href="https://www.google.com/maps/dir/Da+Nang+International+Airport,+Hòa+Thuận+Tây,+Hải+Châu,+Đà+Nẵng,+Vietnam/voco+Ma+Belle+Danang,+168+Võ+Nguyên+Giáp,+Phước+Mỹ,+Sơn+Trà,+Đà+Nẵng,+Vietnam" target="_blank" class="text-blue-500 hover:underline">[Google 地圖]</a> | 交通: Grab/計程車 (約 20 分鐘) | 預估費用: VND 150,000</p>
+                </div>
+                <div class="timeline-item">
+                    <p class="font-semibold text-gray-900">21:30 - 22:30</p>
+                    <p class="text-gray-600">晚餐/宵夜：**美溪沙灘** (My Khe Beach) 周邊在地小吃</p>
+                    <p class="text-sm text-blue-500">停留時間: 1 小時 | 推薦: 簡單的越南河粉 (Phở) 或法棍 (Banh Mi)</p>
+                </div>
+            </div>
+
+            <h3 class="text-2xl font-bold text-gray-700 mb-4 border-l-4 border-red-500 pl-3">Day 2 (4/3): voco 海景與泳池放鬆日</h3>
+            <div class="timeline">
+                <div class="timeline-item timeline-item-active">
+                    <p class="font-semibold text-gray-900">09:00 - 10:30</p>
+                    <p class="text-gray-600">享用 voco **豐盛早餐** (必吃：現煮河粉與新鮮芒果)</p>
+                </div>
+                <div class="timeline-item">
+                    <p class="font-semibold text-gray-900">11:00 - 13:00</p>
+                    <p class="text-gray-600">**voco 頂樓無邊際泳池** / 酒吧放鬆</p>
+                    <p class="text-sm text-blue-500">停留時間: 2 小時 | 活動: 享受海天一線的 Chill Time</p>
+                </div>
+                <div class="timeline-item">
+                    <p class="font-semibold text-gray-900">14:00 - 17:00</p>
+                    <p class="text-gray-600">**SPA 按摩** (建議預約)** / 美溪沙灘漫步**</p>
+                    <p class="text-sm text-gray-500">地點: <a href="https://www.google.com/maps/search/?api=1&query=voco+Ma+Belle+Danang+Spa" target="_blank" class="text-blue-500 hover:underline">[Google 地圖]</a>周邊按摩店 | 停留時間: 3 小時</p>
+                </div>
+                <div class="timeline-item">
+                    <p class="font-semibold text-gray-900">19:00 - 21:00</p>
+                    <p class="text-gray-600">晚餐：峴港海鮮大排檔 (例如：**Be Man Seafood**)</p>
+                    <p class="text-sm text-gray-500">地點: <a href="https://www.google.com/maps/search/?api=1&query=Bé+Mặn" target="_blank" class="text-blue-500 hover:underline">[Google 地圖]</a></p>
+                </div>
+            </div>
+            
+            <h3 class="text-2xl font-bold text-gray-700 mb-4 border-l-4 border-red-500 pl-3">Day 3 (4/4): 轉場會安 & 燈籠夜景 (重要移動日)</h3>
+            <div class="timeline">
+                <div class="timeline-item timeline-item-active">
+                    <p class="font-semibold text-gray-900">10:30 - 11:30</p>
+                    <p class="text-gray-600">voco Check-out → Four Points 寄放大行李 → **僅攜帶輕便行李**</p>
+                    <p class="text-sm text-gray-500">建議路線: voco → <a href="https://www.google.com/maps/search/?api=1&query=Four+Points+by+Sheraton+Danang" target="_blank" class="text-blue-500 hover:underline">[Four Points 寄放]</a> (請務必拿取寄放牌)</p>
+                </div>
+                <div class="timeline-item">
+                    <p class="font-semibold text-gray-900">11:30 - 12:30</p>
+                    <p class="text-gray-600">**Four Points → La Charm Hoi An Hotel**</p>
+                    <p class="text-sm text-gray-500">建議路線: <a href="https://www.google.com/maps/dir/Four+Points+by+Sheraton+Danang,+118-120+Võ+Nguyên+Giáp,+Mân+Thái,+Sơn+Trà,+Đà+Nẵng,+Vietnam/La+Charm+Hoi+An+Hotel+%26+Spa,+228+Nguyễn+Duy+Hiệu,+Cẩm+Châu,+Hội+An,+Quảng+Nam,+Vietnam" target="_blank" class="text-blue-500 hover:underline">[Google 地圖]</a> | 交通: Grab/計程車 (約 50 分鐘) | 預估費用: VND 400,000</p>
+                </div>
+                <div class="timeline-item">
+                    <p class="font-semibold text-gray-900">14:00 - 17:00</p>
+                    <p class="text-gray-600">會安田園漫步：**免費單車遊**稻田 (Cam Chau 區)</p>
+                    <p class="text-sm text-blue-500">停留時間: 3 小時 | 活動: 感受會安慢生活，遠離古城喧囂</p>
+                </div>
+                <div class="timeline-item">
+                    <p class="font-semibold text-gray-900">17:30 - 19:30</p>
+                    <p class="text-gray-600">晚餐：**古鎮河畔餐廳** (如：Morning Glory / Cargo Club)</p>
+                    <p class="text-sm text-gray-500">必吃: 會安特色美食 (如：高樓麵 Cao Lầu、白玫瑰 Banh Bao Vac)</p>
+                </div>
+                <div class="timeline-item timeline-item-active">
+                    <p class="font-semibold text-gray-900">19:30 - 21:30</p>
+                    <p class="text-gray-600">**【會安精華】燈籠夜景**、夜市與**放水燈**</p>
+                    <p class="text-sm text-blue-500">停留時間: 2 小時 | 活動: 萬盞燈籠、日本橋 (Japanese Bridge) 夜景拍照</p>
+                </div>
+            </div>
+
+            <h3 class="text-2xl font-bold text-gray-700 mb-4 border-l-4 border-red-500 pl-3">Day 4 (4/5): 會安清晨與回歸 Four Points</h3>
+            <div class="timeline">
+                <div class="timeline-item timeline-item-active">
+                    <p class="font-semibold text-gray-900">08:00 - 09:30</p>
+                    <p class="text-gray-600">**會安清晨漫步**：無遊客的古鎮街道，享用在地咖啡。</p>
+                </div>
+                <div class="timeline-item">
+                    <p class="font-semibold text-gray-900">11:00 - 12:30</p>
+                    <p class="text-gray-600">La Charm Check-out → **Four Points** (Check-in & 領行李)</p>
+                    <p class="text-sm text-gray-500">活動: 回到 Four Points 領回大行李，正式入住海景房</p>
+                </div>
+                <div class="timeline-item">
+                    <p class="font-semibold text-gray-900">13:30 - 14:30</p>
+                    <p class="text-gray-600">午餐：Four Points 周邊餐廳或飯店輕食</p>
+                </div>
+                <div class="timeline-item">
+                    <p class="font-semibold text-gray-900">15:00 - 18:00</p>
+                    <p class="text-gray-600">**Four Points 泳池放鬆**：在飯店高樓泳池享受海景</p>
+                    <p class="text-sm text-blue-500">停留時間: 3 小時 | 活動: 轉換心情，享受現代設施</p>
+                </div>
+                <div class="timeline-item">
+                    <p class="font-semibold text-gray-900">19:30 - 21:30</p>
+                    <p class="text-gray-600">晚餐：峴港市區 (例如：**Pizza 4P's Da Nang**)</p>
+                </div>
+            </div>
+
+            <h3 class="text-2xl font-bold text-gray-700 mb-4 border-l-4 border-red-500 pl-3">Day 5 (4/6): 城市探索與購物 (Four Points)</h3>
+            <div class="timeline">
+                <div class="timeline-item timeline-item-active">
+                    <p class="font-semibold text-gray-900">09:00 - 10:30</p>
+                    <p class="text-gray-600">享用 Four Points **豐盛早餐** (多樣化的國際自助餐)</p>
+                </div>
+                <div class="timeline-item">
+                    <p class="font-semibold text-gray-900">11:00 - 13:00</p>
+                    <p class="text-gray-600">**韓市場** (Han Market) 購物與採買伴手禮</p>
+                    <p class="text-sm text-gray-500">地點: <a href="https://www.google.com/maps/search/?api=1&query=Han+Market+Da+Nang" target="_blank" class="text-blue-500 hover:underline">[Google 地圖]</a> | 停留時間: 2 小時 | 必買: 咖啡、腰果、奧黛 (Ao Dai)</p>
+                </div>
+                <div class="timeline-item">
+                    <p class="font-semibold text-gray-900">14:00 - 16:00</p>
+                    <p class="text-gray-600">文化景點：**峴港大教堂** (Pink Church) 拍照</p>
+                    <p class="text-sm text-gray-500">地點: <a href="https://www.google.com/maps/search/?api=1&query=Da+Nang+Cathedral" target="_blank" class="text-blue-500 hover:underline">[Google 地圖]</a> | 停留時間: 1 小時</p>
+                </div>
+                <div class="timeline-item">
+                    <p class="font-semibold text-gray-900">19:30 - 20:30</p>
+                    <p class="text-gray-600">晚餐：**米廣** (Mì Quảng) 或**越式煎餅** (Bánh Xèo)</p>
+                </div>
+                <div class="timeline-item timeline-item-active">
+                    <p class="font-semibold text-gray-900">21:00 - 21:30</p>
+                    <p class="text-gray-600">**【若為週末】** 龍橋 (Dragon Bridge) 噴火/噴水秀</p>
+                    <p class="text-sm text-blue-500">地點: <a href="https://www.google.com/maps/search/?api=1&query=Dragon+Bridge+Da+Nang" target="_blank" class="text-blue-500 hover:underline">[Google 地圖]</a> | 僅限週六/日晚間 9 點</p>
+                </div>
+            </div>
+
+            <h3 class="text-2xl font-bold text-gray-700 mb-4 border-l-4 border-red-500 pl-3">Day 6 (4/7): 悠閒告別日</h3>
+            <div class="timeline">
+                <div class="timeline-item timeline-item-active">
+                    <p class="font-semibold text-gray-900">08:00 - 10:00</p>
+                    <p class="text-gray-600">Four Points 悠閒早餐與飯店設施收尾</p>
+                </div>
+                <div class="timeline-item">
+                    <p class="font-semibold text-gray-900">11:00 - 12:00</p>
+                    <p class="text-gray-600">從容 Check-out</p>
+                </div>
+                <div class="timeline-item">
+                    <p class="font-semibold text-gray-900">12:30</p>
+                    <p class="text-gray-600">Four Points → 峴港國際機場 (DAD) 準備登機</p>
+                    <p class="text-sm text-gray-500">交通: Grab/計程車 (約 15 分鐘) | **輕鬆告別，無需趕路。**</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="food-map" class="page-section bg-white p-6 rounded-lg shadow-xl mb-8 hidden-section">
+            <h2 class="text-3xl font-extrabold text-gray-900 mb-4 border-b-2 pb-2 text-blue-600">🍽️ 美食地圖 (互動篩選)</h2>
+
+            <div class="mb-4 flex space-x-3" id="food-filter">
+                <button data-filter="all" class="filter-btn bg-blue-500 text-white px-4 py-2 rounded-full text-sm hover:bg-blue-600 transition">全部美食</button>
+                <button data-filter="local" class="filter-btn bg-gray-200 text-gray-800 px-4 py-2 rounded-full text-sm hover:bg-gray-300 transition">當地特色</button>
+                <button data-filter="seafood" class="filter-btn bg-gray-200 text-gray-800 px-4 py-2 rounded-full text-sm hover:bg-gray-300 transition">海鮮/西餐</button>
+                <button data-filter="coffee" class="filter-btn bg-gray-200 text-gray-800 px-4 py-2 rounded-full text-sm hover:bg-gray-300 transition">咖啡/甜點</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="food-list">
+                <div class="food-item p-4 bg-red-50 rounded-lg shadow" data-category="local">
+                    <h4 class="font-bold text-lg text-red-700">高樓麵 (Cao Lầu) - 會安</h4>
+                    <p class="text-sm text-gray-700">會安獨有，麵條有嚼勁，配料豐富。</p>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Thanh+Cao+Lầu,+Hội+An" target="_blank" class="text-blue-500 hover:underline text-xs">[Google 地圖: Thanh Cao Lầu]</a>
+                </div>
+                <div class="food-item p-4 bg-red-50 rounded-lg shadow" data-category="local">
+                    <h4 class="font-bold text-lg text-red-700">白玫瑰 (Bánh Bao Vac) - 會安</h4>
+                    <p class="text-sm text-gray-700">薄皮蝦餃，形狀似玫瑰，口感Q彈。</p>
+                    <a href="https://www.google.com/maps/search/?api=1&query=White+Rose+Restaurant,+Hội+An" target="_blank" class="text-blue-500 hover:underline text-xs">[Google 地圖: White Rose Restaurant]</a>
+                </div>
+                <div class="food-item p-4 bg-blue-50 rounded-lg shadow" data-category="seafood">
+                    <h4 class="font-bold text-lg text-blue-700">Be Man 海鮮大排檔 - 峴港</h4>
+                    <p class="text-sm text-gray-700">當地熱門海鮮店，海鮮新鮮且平價。</p>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Bé+Mặn" target="_blank" class="text-blue-500 hover:underline text-xs">[Google 地圖: Bé Mặn]</a>
+                </div>
+                <div class="food-item p-4 bg-blue-50 rounded-lg shadow" data-category="seafood">
+                    <h4 class="font-bold text-lg text-blue-700">Pizza 4P's - 峴港</h4>
+                    <p class="text-sm text-gray-700">知名日式創意披薩，品質穩定，適合換換口味。</p>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Pizza+4P's+Da+Nang" target="_blank" class="text-blue-500 hover:underline text-xs">[Google 地圖: Pizza 4P's]</a>
+                </div>
+                <div class="food-item p-4 bg-green-50 rounded-lg shadow" data-category="coffee">
+                    <h4 class="font-bold text-lg text-green-700">Cong Caphe (網紅咖啡) - 峴港/會安</h4>
+                    <p class="text-sm text-gray-700">經典椰奶咖啡 (Coconut Coffee)，復古軍事風格裝潢。</p>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Cong+Caphe+Da+Nang" target="_blank" class="text-blue-500 hover:underline text-xs">[Google 地圖: 峴港分店]</a>
+                </div>
+                <div class="food-item p-4 bg-green-50 rounded-lg shadow" data-category="coffee">
+                    <h4 class="font-bold text-lg text-green-700">A Little Hoian Coffee & Tea</h4>
+                    <p class="text-sm text-gray-700">會安古鎮周邊的寧靜咖啡館，適合下午茶。</p>
+                    <a href="https://www.google.com/maps/search/?api=1&query=A+Little+Hoian+Coffee+%26+Tea" target="_blank" class="text-blue-500 hover:underline text-xs">[Google 地圖: A Little Hoian]</a>
+                </div>
+            </div>
+        </section>
+        
+        <section id="prep" class="page-section bg-white p-6 rounded-lg shadow-xl mb-8 hidden-section">
+            <h2 class="text-3xl font-extrabold text-gray-900 mb-4 border-b-2 pb-2 text-blue-600">✅ 行前準備與注意事項</h2>
+            
+            <h3 class="text-2xl font-bold mt-4 mb-3 text-gray-700">💰 貨幣與支付</h3>
+            <ul class="list-disc list-inside text-gray-700 space-y-1 ml-4">
+                <li>**貨幣：** 越南盾 (VND)。建議在機場或峴港市區金店換匯 (匯率通常較好)。</li>
+                <li>**小費：** 飯店、Spa、計程車無需強迫支付，但給予約 VND 20,000~50,000 是常見做法。</li>
+                <li>**支付：** 大部分商店和餐廳接受現金。高檔飯店/西餐廳可刷卡。</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold mt-4 mb-3 text-gray-700">📞 通訊與交通</h3>
+            <ul class="list-disc list-inside text-gray-700 space-y-1 ml-4">
+                <li>**通訊：** 抵達機場後立即購買 **SIM 卡** (建議 Mobifone 或 Viettel) 或使用 eSIM。</li>
+                <li>**交通 App：** 必下載 **Grab App**，用於叫車，價格公開透明。</li>
+                <li>**會安移動：** 古鎮區禁行汽車，多數飯店提供**免費腳踏車**，請多加利用。</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold mt-4 mb-3 text-gray-700">☀️ 氣候與衣著</h3>
+            <ul class="list-disc list-inside text-gray-700 space-y-1 ml-4">
+                <li>**氣候：** 四月峴港會安進入**旱季**，氣溫約 $25^\circ C \sim 30^\circ C$，乾燥溫暖，適合海邊活動。</li>
+                <li>**衣著：** 以夏季輕薄透氣衣物為主，海灘裝備、泳裝 (for voco/Four Points 泳池)、遮陽帽、太陽眼鏡。</li>
+                <li>**會安：** 古鎮拍照建議穿著**淺色/白色**系衣物，搭配黃牆背景效果極佳。</li>
+            </ul>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white text-center p-4">
+        <p class="text-sm">© 2026 專業旅遊規劃師 | 峴港會安客製化行程</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const pageSections = document.querySelectorAll('.page-section');
+            const foodFilter = document.getElementById('food-filter');
+            const foodList = document.getElementById('food-list');
+
+            // 1. SPA Navigation Logic
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href').substring(1);
+                    
+                    // Hide all sections
+                    pageSections.forEach(section => {
+                        section.classList.add('hidden-section');
+                    });
+                    
+                    // Show target section
+                    document.getElementById(targetId).classList.remove('hidden-section');
+                    
+                    // Update active state
+                    navLinks.forEach(nav => nav.classList.remove('border-blue-500', 'text-gray-900'));
+                    link.classList.add('border-blue-500', 'text-gray-900');
+                    
+                    // Scroll to top of content
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                    // Rerender chart if transport section is active
+                    if (targetId === 'transport') {
+                        renderTransportChart();
+                    }
+                });
+            });
+
+            // Initially activate the first section
+            document.querySelector('.nav-link').click();
+
+            // 2. 美食地圖篩選器 Logic
+            foodFilter.addEventListener('click', (e) => {
+                if (e.target.classList.contains('filter-btn')) {
+                    const filter = e.target.dataset.filter;
+                    
+                    // Update button active state
+                    document.querySelectorAll('.filter-btn').forEach(btn => {
+                        btn.classList.remove('bg-blue-500', 'text-white');
+                        btn.classList.add('bg-gray-200', 'text-gray-800');
+                    });
+                    e.target.classList.remove('bg-gray-200', 'text-gray-800');
+                    e.target.classList.add('bg-blue-500', 'text-white');
+
+                    // Filter food items
+                    document.querySelectorAll('.food-item').forEach(item => {
+                        if (filter === 'all' || item.dataset.category === filter) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                }
+            });
+
+            // Initially set '全部美食' filter active
+            document.querySelector('[data-filter="all"]').click();
+
+            // 3. Chart.js (交通時間與費用比較圖)
+            function renderTransportChart() {
+                const ctx = document.getElementById('transportChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['機場↔voco/FP', 'voco↔FP (Day 3)', 'FP↔會安 (單程)', '市區單程 Grab'],
+                        datasets: [{
+                            label: '時間 (分鐘)',
+                            data: [20, 5, 50, 10],
+                            backgroundColor: 'rgba(59, 130, 246, 0.6)',
+                            borderColor: 'rgba(59, 130, 246, 1)',
+                            borderWidth: 1,
+                            yAxisID: 'y-time'
+                        }, {
+                            label: '費用 (VND 萬)',
+                            data: [15, 5, 40, 7], // 預估費用單位為 10,000 VND
+                            backgroundColor: 'rgba(239, 68, 68, 0.6)',
+                            borderColor: 'rgba(239, 68, 68, 1)',
+                            borderWidth: 1,
+                            yAxisID: 'y-cost'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: '主要移動時間與預估費用比較 (VND 萬)',
+                                font: { size: 16 }
+                            },
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false,
+                                callbacks: {
+                                    title: function(context) {
+                                        return context[0].label;
+                                    },
+                                    label: function(context) {
+                                        if (context.dataset.label === '費用 (VND 萬)') {
+                                            return `費用: 約 VND ${context.parsed.y}0,000`;
+                                        }
+                                        return `${context.dataset.label}: ${context.parsed.y} 分鐘`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            'y-time': {
+                                type: 'linear',
+                                display: true,
+                                position: 'left',
+                                title: {
+                                    display: true,
+                                    text: '時間 (分鐘)'
+                                }
+                            },
+                            'y-cost': {
+                                type: 'linear',
+                                display: true,
+                                position: 'right',
+                                grid: { drawOnChartArea: false },
+                                title: {
+                                    display: true,
+                                    text: '費用 (VND 萬)'
+                                },
+                                ticks: {
+                                    callback: function(value) {
+                                        return `${value}萬`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
