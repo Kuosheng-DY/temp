@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【徐先生/蔡小姐】匈牙利波蘭 10日 - 雙版本客製化行程 (最終購票整合版 V9)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        /* 自定義滾動條樣式 */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        /* 確保 SPA 頁面切換機制更穩定：非 active 的頁面隱藏 */
+        .spa-page:not(.active) {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans text-gray-800">
+
+<script>
+    // --- 共用資訊 ---
+    const TRIP_INFO = {
+        destination: "匈牙利波蘭三城巡禮 (Budapest, Kraków, Warszawa)",
+        duration: "10天9夜",
+        dates: "2026/02/13 (五) - 02/22 (日)",
+        members: "徐先生 / 蔡小姐",
+    };
+    
+    // Google Maps 連結工具函數 (使用範例佔位符)
+    const MAPS_SEARCH_BASE_URL = 'https://www.google.com/maps/search/?api=1&query=';
+    const MAPS_DIRECTION_BASE_URL = 'https://www.google.com/maps/dir/?api=1';
+    const createMapLink = (query) => `${MAPS_SEARCH_BASE_URL}${encodeURIComponent(query)}`;
+    const createDirectionLink = (origin, destination) => `${MAPS_DIRECTION_BASE_URL}&origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&travelmode=transit`;
+
+    // --- 版本一：經典舒適巡禮 (V9 修正) ---
+    const ITINERARY_DATA_V1 = {
+        name: "經典舒適巡禮 (版本一)",
+        style: "歷史文化、城市漫步、舒適深度體驗",
+        transport: "城市間: 夜臥火車 (EN 476) / 波蘭高鐵 (EIC/IC)",
+        accommodations: [
+            { city: 'Budapest', name: '七季公寓酒店 (Seven Seasons Apartments)', duration: '3晚', mapQuery: 'Seven Seasons Apartments, Budapest' },
+            { city: 'Kraków', name: 'PLANTONIA Aparthotel', duration: '3晚', mapQuery: 'PLANTONIA Aparthotel, Kraków' },
+            // V9 修正: 華沙住宿地圖連結
+            { city: 'Warszawa', name: 'GreenView Warsaw City Centre', duration: '2晚', mapQuery: 'Ogrodowa 65, 沃拉, 00-876 華沙, 波蘭' }
+        ],
+        details: [
+            // Day 1: 2/13 (五) - 布達佩斯
+            { day: '1', date: '2/13 (五)', city: '布達佩斯 (Day 1)', category: '早上', content: '抵達布達佩斯 (BUD)，入住七季公寓酒店', meal: '機上/自理', notes: '建議搭乘計程車/機場快線至飯店', mapQuery: 'Seven Seasons Apartments, Budapest' },
+            { day: '1', date: '2/13 (五)', city: '布達佩斯 (Day 1)', category: '下午', content: '聖史蒂芬大教堂巡禮', meal: '午餐：當地簡餐', notes: '停留：2hr', mapQuery: 'St. Stephen\'s Basilica, Budapest' },
+            { day: '1', date: '2/13 (五)', city: '布達佩斯 (Day 1)', category: '晚上', content: '國會大廈外觀夜景與多瑙河散步', meal: '晚餐：Gundel Étterem (匈牙利傳統菜)', notes: '建議預約，豪華體驗', mapQuery: 'Hungarian Parliament Building, Budapest' },
+            
+            // Day 2: 2/14 (六) - 布達佩斯
+            { day: '2', date: '2/14 (六)', city: '布達佩斯 (Day 2)', category: '上午', content: '塞切尼溫泉浴場 (Széchennyi Thermal Bath)', meal: '早餐：飯店享用', notes: '停留：3hr，請自備泳衣/毛巾', mapQuery: 'Széchenyi Thermal Bath, Budapest' },
+            { day: '2', date: '2/14 (六)', city: '布達佩斯 (Day 2)', category: '下午', content: '漁人堡與布達城堡區 (Buda Castle)', meal: '午餐：當地咖啡館/簡餐', notes: '停留：3hr', mapQuery: 'Fisherman\'s Bastion, Budapest' },
+            { day: '2', date: '2/14 (六)', city: '布達佩斯 (Day 2)', category: '晚上', content: '多瑙河遊船 (Danube River Cruise)', meal: '晚餐：Getto Gulyás (匈牙利燉肉)', notes: '欣賞兩岸夜景', mapQuery: 'Danube River Cruise, Budapest' },
+            
+            // Day 3: 2/15 (日) - 布達佩斯
+            { day: '3', date: '2/15 (日)', city: '布達佩斯 (Day 3)', category: '上午', content: '中央市場 (Great Market Hall) 購物與小吃', meal: '早餐：飯店享用', notes: '停留：2hr', mapQuery: 'Great Market Hall, Budapest' },
+            { day: '3', date: '2/15 (日)', city: '布達佩斯 (Day 3)', category: '下午', content: '英雄廣場與沃伊達奇城堡', meal: '午餐：New York Café (華麗咖啡廳)', notes: '停留：2.5hr', mapQuery: 'Heroes\' Square, Budapest' },
+            { day: '3', date: '2/15 (日)', city: '布達佩斯 (Day 3)', category: '晚上', content: '多瑙河畔鞋子 & 自由活動', meal: '晚餐：猶太區晚餐', notes: '輕鬆度過在布達佩斯的最後一夜', mapQuery: 'Shoes on the Danube Bank, Budapest' },
+
+            // Day 4: 2/16 (一) - 布達佩斯 → 夜臥火車 (關鍵修正日)
+            { day: '4', date: '2/16 (一)', city: '布達佩斯 → 克拉科夫', category: '上午', content: '自由時間 / 購物 / 飯店周邊活動', meal: '早餐：飯店享用', notes: '彈性時間', mapQuery: 'Budapest' },
+            { day: '4', date: '2/16 (一)', city: '布達佩斯 → 克拉科夫', category: '下午', content: '退房 / 前往 Nyugati 火車站', meal: '午餐：車站附近輕食', notes: '將大行李寄存在車站', mapQuery: 'Budapest Nyugati railway station' },
+            { day: '4', date: '2/16 (一)', city: '布達佩斯 → 克拉科夫', category: '晚上', content: '**搭乘夜臥火車 EN 476**', meal: '晚餐：火車上或車站附近', notes: '預計 21:00 出發，需提前預訂臥鋪', mapQuery: 'Budapest Nyugati railway station' },
+
+            // Day 5: 2/17 (二) - 克拉科夫 (夜臥火車抵達) - V9 修正
+            { day: '5', date: '2/17 (二)', city: '克拉科夫 (Day 1)', category: '早上', 
+              content: '夜臥火車抵達克拉科夫 (Kraków Główny)，前往 PLANTONIA Aparthotel 寄放行李並辦理提早 Check-in 手續', // 修正內容
+              meal: '早餐：火車上/車站咖啡', notes: '預計 08:00 抵達', mapQuery: 'PLANTONIA Aparthotel, Kraków from Kraków Główny railway station' },
+            { day: '5', date: '2/17 (二)', city: '克拉科夫 (Day 1)', category: '下午', content: '瓦維爾城堡 (Wawel Castle) 與大教堂', meal: '午餐：當地波蘭餃子 Pierogi', notes: '停留：3hr', mapQuery: 'Wawel Castle, Kraków' },
+            { day: '5', date: '2/17 (二)', city: '克拉科夫 (Day 1)', category: '晚上', content: '中央集市廣場 (Rynek Główny) 漫步與夜景', meal: '晚餐：Restauracja Starka (波蘭傳統菜)', notes: '位於卡齊米日猶太區', mapQuery: 'Rynek Główny, Kraków' },
+            
+            // Day 6: 2/18 (三) - 克拉科夫 (Day 2)
+            { day: '6', date: '2/18 (三)', city: '克拉科夫 (Day 2)', category: '上午', content: '維利奇卡鹽礦 (Wieliczka Salt Mine) 半日遊', meal: '早餐：飯店享用', notes: '建議安排半日遊，需預約導覽', mapQuery: 'Wieliczka Salt Mine' },
+            { day: '6', date: '2/18 (三)', city: '克拉科夫 (Day 2)', category: '下午', content: '聖母聖殿 (St. Mary\'s Basilica) 參觀與紡織會館', meal: '午餐：自由選擇', notes: '聆聽號角聲', mapQuery: 'St. Mary\'s Basilica, Kraków' },
+            { day: '6', date: '2/18 (三)', city: '克拉科夫 (Day 2)', category: '晚上', content: '卡齊米日猶太區 (Kazimierz) 深度探索', meal: '晚餐：猶太區特色餐廳', notes: '體驗猶太區的歷史與氛圍', mapQuery: 'Kazimierz, Kraków' },
+
+            // Day 7: 2/19 (四) - 克拉科夫 (Day 3) 
+            { day: '7', date: '2/19 (四)', city: '克拉科夫 (Day 3)', category: '上午', content: '奧斯威辛集中營 (Auschwitz-Birkenau) 或 自由活動/購物 (擇一)', meal: '早餐：飯店享用', notes: '若選擇參觀集中營，需預約一整天', mapQuery: 'Auschwitz-Birkenau Memorial and Museum' },
+            { day: '7', date: '2/19 (四)', city: '克拉科夫 (Day 3)', category: '下午', content: '舊城區/波蘭簡餐/準備回飯店整理行李', meal: '午餐：當地簡餐', notes: '彈性時間', mapQuery: 'Kraków Old Town' },
+            { day: '7', date: '2/19 (四)', city: '克拉科夫 (Day 3)', category: '晚上', content: '在克拉科夫的告別晚餐與整理行李', meal: '晚餐：波蘭傳統菜 Pierogi', notes: '**今晚住宿克拉科夫**，為隔天一早出發做準備', mapQuery: 'Kraków' },
+            
+            // Day 8: 2/20 (五) - 克拉科夫 → 華沙 (Day 1) - V9 修正
+            { day: '8', date: '2/20 (五)', city: '克拉科夫 → 華沙', category: '早上', content: 'Check-out 飯店，搭乘波蘭高鐵 (EIC/IC) 前往華沙 (Warszawa)', meal: '早餐：火車上或車站咖啡', notes: '預計 09:00 出發，車程約 3hr', mapQuery: 'Warszawa Centralna railway station from Kraków Główny railway station' },
+            { day: '8', date: '2/20 (五)', city: '華沙 (Day 1)', category: '下午', 
+              content: '前往 GreenView Warsaw City Centre 辦理 Check-in 手續 / 華沙王宮參觀', // 修正內容
+              meal: '午餐：火車站/飯店附近輕食', notes: '停留：2.5hr', mapQuery: 'Royal Castle, Warsaw' }, // mapQuery 仍保留華沙王宮，飯店地圖在住宿頁或行程內容末尾連結
+            { day: '8', date: '2/20 (五)', city: '華沙 (Day 1)', category: '晚上', content: '華沙舊城廣場散步與晚餐', meal: '晚餐：Zapiecek (波蘭餃子)', notes: '欣賞華沙美人魚', mapQuery: 'Old Town Square, Warsaw' },
+            
+            // Day 9: 2/21 (六) - 華沙 (Day 2)
+            { day: '9', date: '2/21 (六)', city: '華沙 (Day 2)', category: '早上', content: '華沙起義博物館 (Muzeum Powstania Warszawskiego)', meal: '早餐：飯店享用', notes: '停留：3hr，建議提早購票', mapQuery: 'Warsaw Uprising Museum' },
+            { day: '9', date: '2/21 (六)', city: '華沙 (Day 2)', category: '下午', content: '瓦津基公園 (Łazienki Park) 散步 / 蕭邦博物館', meal: '午餐：當地咖啡館/簡餐', notes: '採購伴手禮', mapQuery: 'Łazienki Park, Warsaw' },
+            { day: '9', date: '2/21 (六)', city: '華沙 (Day 2)', category: '晚上', content: '最終告別晚餐與整理行李', meal: '晚餐：自由選擇/高級餐廳', notes: '為回程做準備', mapQuery: 'Warsaw' },
+
+            // Day 10: 2/22 (日) - 啟程
+            { day: '10', date: '2/22 (日)', city: '啟程返家', category: '早上', content: 'Check-out 飯店', meal: '早餐：飯店享用', notes: '準備前往機場', mapQuery: 'Warsaw Chopin Airport' },
+            { day: '10', date: '2/22 (日)', city: '啟程返家', category: '下午', content: '交通至華沙蕭邦機場 (WAW) / 辦理登機手續', meal: '機上/自理', notes: '預留足夠時間', mapQuery: 'Warsaw Chopin Airport' }
+        ],
+        transitChart: {
+            labels: ['布達佩斯 → 克拉科夫 (夜臥 EN 476)', '克拉科夫 → 華沙 (高鐵 EIC/IC)'],
+            times: [8.5, 3.0], // 預估時間 (小時)
+            costs: [80, 45] // 預估費用 (歐元/人)
+        },
+        prep: {
+            tickets: [
+                '布達佩斯 → 克拉科夫 夜臥火車票 (EN 476, Sleeper Double) ⚠️',
+                '克拉科夫 → 華沙 波蘭高鐵票 (EIC/IC, 2nd Class) ⚠️',
+                '奧斯威辛集中營門票 (需提前於官網預約)',
+                '維利奇卡鹽礦或奧斯威辛擇一門票', 
+                '華沙起義博物館門票'
+            ],
+            notes: [
+                '🔥 [購票提醒 1/3] 夜臥火車 (EN 476)：預計 2025/11/16 左右，於 czech-transport.com 搶購 Sleeper Double (€231 總價)。',
+                '🚂 [購票提醒 2/3] 波蘭高鐵 (PKP)：預計 2025/12/20 左右，於 PKP 官網搶購早鳥優惠票。',
+                '🏛️ [購票提醒 3/3] 奧斯威辛集中營：請務必在 [visit.auschwitz.org](https://visit.auschwitz.org/?lang=zh-tw) 提前預約，可選擇免費入場證 (時段有限) 或付費導覽團。',
+                '🚌 集中營交通：建議從 Kraków MDA Bus Station 搭乘直達巴士 (單程約 1.5-2 小時)，站名選擇 Oświęcim, Muzeum Auschwitz。',
+                '請準備歐元與波蘭幣 (PLN)', 
+                '匈牙利與波蘭均為申根區', 
+                '2月波蘭天氣寒冷，務必保暖'
+            ]
+        }
+    };
+
+    // --- 版本二：深度人文與特色體驗 (V9 修正) ---
+    const ITINERARY_DATA_V2 = {
+        name: "深度人文與特色體驗 (版本二)",
+        style: "深度歷史、獨特體驗、人文巡禮",
+        transport: "城市間: 夜臥火車 (EN 476) / 波蘭高鐵 (EIC/IC)",
+        accommodations: [
+            { city: 'Budapest', name: 'Hotel Moments Budapest', duration: '3晚', mapQuery: 'Hotel Moments Budapest' },
+            { city: 'Kraków', name: 'Apartamenty Sun & Snow (高評分公寓)', duration: '3晚', mapQuery: 'Apartamenty Sun & Snow Stare Miasto, Kraków' },
+            // V9 修正: 華沙住宿地圖連結
+            { city: 'Warszawa', name: 'The Westin Warsaw', duration: '2晚', mapQuery: 'Ogrodowa 65, 沃拉, 00-876 華沙, 波蘭' }
+        ],
+        details: [
+            // Day 1: 2/13 (五) - 布達佩斯
+            { day: '1', date: '2/13 (五)', city: '布達佩斯 (Day 1)', category: '早上', content: '抵達布達佩斯 (BUD)，入住 Hotel Moments Budapest', meal: '機上/自理', notes: '搭乘計程車/機場快線至飯店', mapQuery: 'Hotel Moments Budapest' },
+            { day: '1', date: '2/13 (五)', city: '布達佩斯 (Day 1)', category: '下午', content: '國會大廈參觀 (需提前預約)', meal: '午餐：當地簡餐', notes: '停留：2hr', mapQuery: 'Hungarian Parliament Building, Budapest' },
+            { day: '1', date: '2/13 (五)', city: '布達佩斯 (Day 1)', category: '晚上', content: '布達佩斯「廢墟酒吧」體驗 (Szimpla Kert)', meal: '晚餐：當地美食 Karaván Street Food', notes: '體驗獨特夜生活', mapQuery: 'Szimpla Kert, Budapest' },
+            
+            // Day 2: 2/14 (六) - 布達佩斯
+            { day: '2', date: '2/14 (六)', city: '布達佩斯 (Day 2)', category: '上午', content: '大猶太會堂 (Dohány Street Synagogue) 參觀', meal: '早餐：飯店享用', notes: '停留：2hr', mapQuery: 'Dohány Street Synagogue, Budapest' },
+            { day: '2', date: '2/14 (六)', city: '布達佩斯 (Day 2)', category: '下午', content: '鎖鏈橋與布達區爬山健行', meal: '午餐：當地咖啡館/簡餐', notes: '停留：3hr', mapQuery: 'Széchenyi Chain Bridge, Budapest' },
+            { day: '2', date: '2/14 (六)', city: '布達佩斯 (Day 2)', category: '晚上', content: '蓋勒特溫泉浴場 (Gellért Thermal Bath)', meal: '晚餐：米其林推薦餐廳 (Optional)', notes: '環境較古典安靜', mapQuery: 'Gellért Thermal Bath, Budapest' },
+            
+            // Day 3: 2/15 (日) - 布達佩斯
+            { day: '3', date: '2/15 (日)', city: '布達佩斯 (Day 3)', category: '上午', content: '藝術館與城市公園', meal: '早餐：飯店享用', notes: '停留：2hr', mapQuery: 'Museum of Fine Arts, Budapest' },
+            { day: '3', date: '2/15 (日)', city: '布達佩斯 (Day 3)', category: '下午', content: '安德拉什大街購物與咖啡', meal: '午餐：自理/輕食', notes: '逛街與採購', mapQuery: 'Andrássy Avenue, Budapest' },
+            { day: '3', date: '2/15 (日)', city: '布達佩斯 (Day 3)', category: '晚上', content: '多瑙河畔夜景拍攝', meal: '晚餐：當地特色餐廳', notes: '自由活動', mapQuery: 'Danube River, Budapest' },
+
+            // Day 4: 2/16 (一) - 布達佩斯 → 夜臥火車 
+            { day: '4', date: '2/16 (一)', city: '布達佩斯 → 克拉科夫', category: '上午', content: '自由時間 / 彈性時間', meal: '早餐：飯店享用', notes: '深度探索昨日未訪之處', mapQuery: 'Budapest' },
+            { day: '4', date: '2/16 (一)', city: '布達佩斯 → 克拉科夫', category: '下午', content: '退房 / 前往 Nyugati 火車站', meal: '午餐：車站附近輕食', notes: '將大行李寄存在車站', mapQuery: 'Budapest Nyugati railway station' },
+            { day: '4', date: '2/16 (一)', city: '布達佩斯 → 克拉科夫', category: '晚上', content: '**搭乘夜臥火車 EN 476**', meal: '晚餐：火車上或車站附近', notes: '預計 21:00 出發，需提前預訂臥鋪', mapQuery: 'Budapest Nyugati railway station' },
+
+            // Day 5: 2/17 (二) - 克拉科夫 (夜臥火車抵達) - V9 修正
+            { day: '5', date: '2/17 (二)', city: '克拉科夫 (Day 1)', category: '早上', 
+              content: '夜臥火車抵達克拉科夫，前往 Apartamenty Sun & Snow (高評分公寓) 寄放行李並辦理提早 Check-in 手續', // 修正內容
+              meal: '早餐：火車上/車站咖啡', notes: '預計 08:00 抵達', mapQuery: 'Apartamenty Sun & Snow Stare Miasto, Kraków from Kraków Główny railway station' },
+            { day: '5', date: '2/17 (二)', city: '克拉科夫 (Day 1)', category: '下午', content: '瓦維爾城堡區深度探索與龍洞 (Wawel Dragon)', meal: '午餐：當地波蘭餃子 Pierogarnia Krakowiacy', notes: '停留：3hr', mapQuery: 'Wawel Dragon, Kraków' },
+            { day: '5', date: '2/17 (二)', city: '克拉科夫 (Day 1)', category: '晚上', content: '卡齊米日猶太區 (Kazimierz) 深度探索', meal: '晚餐：Restauracja Starka (波蘭傳統菜)', notes: '猶太區特色餐廳', mapQuery: 'Kazimierz, Kraków' },
+            
+            // Day 6: 2/18 (三) - 克拉科夫 (Day 2)
+            { day: '6', date: '2/18 (三)', city: '克拉科夫 (Day 2)', category: '上午', content: '奧斯威辛集中營 (Auschwitz-Birkenau) 半日遊', meal: '早餐：飯店享用', notes: '建議安排半日遊，需預約導覽，請提前預訂', mapQuery: 'Auschwitz-Birkenau Memorial and Museum' },
+            { day: '6', date: '2/18 (三)', city: '克拉科夫 (Day 2)', category: '下午', content: '中央集市廣場與聖母聖殿 (St. Mary\'s Basilica) 參觀', meal: '午餐：自由選擇', notes: '聆聽號角聲', mapQuery: 'St. Mary\'s Basilica, Kraków' },
+            { day: '6', date: '2/18 (三)', city: '克拉科夫 (Day 2)', category: '晚上', content: '克拉科夫舊城區夜景攝影', meal: '晚餐：當地特色餐廳', notes: '彈性安排', mapQuery: 'Rynek Główny, Kraków' },
+            
+            // Day 7: 2/19 (四) - 克拉科夫 (Day 3) 
+            { day: '7', date: '2/19 (四)', city: '克拉科夫 (Day 3)', category: '上午', content: '維利奇卡鹽礦 (Wieliczka Salt Mine) 或 自由活動/購物 (擇一)', meal: '早餐：飯店享用', notes: '若選擇參觀鹽礦，需安排半日遊', mapQuery: 'Wieliczka Salt Mine' },
+            { day: '7', date: '2/19 (四)', city: '克拉科夫 (Day 3)', category: '下午', content: '舊城區/波蘭簡餐/準備回飯店整理行李', meal: '午餐：當地簡餐', notes: '彈性時間', mapQuery: 'Kraków Old Town' },
+            { day: '7', date: '2/19 (四)', city: '克拉科夫 (Day 3)', category: '晚上', content: '在克拉科夫的告別晚餐與整理行李', meal: '晚餐：波蘭傳統菜 Pierogi', notes: '**今晚住宿克拉科夫**，為隔天一早出發做準備', mapQuery: 'Kraków' },
+            
+            // Day 8: 2/20 (五) - 克拉科夫 → 華沙 (Day 1) - V9 修正
+            { day: '8', date: '2/20 (五)', city: '克拉科夫 → 華沙', category: '早上', content: 'Check-out 飯店，搭乘波蘭高鐵 (EIC/IC) 前往華沙 (Warszawa)', meal: '早餐：火車上或車站咖啡', notes: '預計 09:00 出發，車程約 3hr', mapQuery: 'Warszawa Centralna railway station from Kraków Główny railway station' },
+            { day: '8', date: '2/20 (五)', city: '華沙 (Day 1)', category: '下午', 
+              content: '前往 The Westin Warsaw 辦理 Check-in 手續 / 華沙王宮與舊城區漫步', // 修正內容
+              meal: '午餐：火車站/飯店附近輕食', notes: '欣賞華沙美人魚', mapQuery: 'Royal Castle, Warsaw' }, // mapQuery 仍保留華沙王宮，飯店地圖在住宿頁或行程內容末尾連結
+            { day: '8', date: '2/20 (五)', city: '華沙 (Day 1)', category: '晚上', content: '波蘭伏特加博物館 (Muzeum Polskiej Wódki)', meal: '晚餐：Zapiecek (波蘭餃子)', notes: '體驗波蘭國酒', mapQuery: 'Polish Vodka Museum, Warsaw' },
+            
+            // Day 9: 2/21 (六) - 華沙 (Day 2)
+            { day: '9', date: '2/21 (六)', city: '華沙 (Day 2)', category: '早上', content: '華沙起義博物館 (Muzeum Powstania Warszawskiego)', meal: '早餐：飯店享用', notes: '停留：3hr', mapQuery: 'Warsaw Uprising Museum' },
+            { day: '9', date: '2/21 (六)', city: '華沙 (Day 2)', category: '下午', content: '肖邦博物館 (Fryderyk Chopin Museum) / 瓦津基公園', meal: '午餐：當地咖啡館/簡餐', notes: '深度文化體驗', mapQuery: 'Fryderyk Chopin Museum, Warsaw' },
+            { day: '9', date: '2/21 (六)', city: '華沙 (Day 2)', category: '晚上', content: '最終告別晚餐與整理行李', meal: '晚餐：Stary Dom (傳統波蘭家常菜)', notes: '為回程做準備', mapQuery: 'Stary Dom, Warsaw' },
+
+            // Day 10: 2/22 (日) - 啟程
+            { day: '10', date: '2/22 (日)', city: '啟程返家', category: '早上', content: 'Check-out 飯店', meal: '早餐：飯店享用', notes: '準備前往機場', mapQuery: 'Warsaw Chopin Airport' },
+            { day: '10', date: '2/22 (日)', city: '啟程返家', category: '下午', content: '交通至華沙蕭邦機場 (WAW) / 辦理登機手續', meal: '機上/自理', notes: '預留足夠時間', mapQuery: 'Warsaw Chopin Airport' }
+        ],
+        transitChart: {
+            labels: ['布達佩斯 → 克拉科夫 (夜臥 EN 476)', '克拉科夫 → 華沙 (高鐵 EIC/IC)'],
+            times: [8.5, 3.0], // 預估時間 (小時)
+            costs: [75, 40] // 預估費用 (歐元/人)
+        },
+        prep: {
+            tickets: [
+                '布達佩斯 → 克拉科夫 夜臥火車票 (EN 476, Sleeper Double) ⚠️',
+                '克拉科夫 → 華沙 波蘭高鐵票 (EIC/IC, 2nd Class) ⚠️',
+                '奧斯威辛集中營門票 (需提前於官網預約)',
+                '維利奇卡鹽礦或奧斯威辛擇一門票', 
+                '華沙起義博物館門票', 
+                '布達佩斯國會大廈參觀門票' // V2 獨有
+            ],
+            notes: [
+                '🔥 [購票提醒 1/3] 夜臥火車 (EN 476)：預計 2025/11/16 左右，於 czech-transport.com 搶購 Sleeper Double (€231 總價)。',
+                '🚂 [購票提醒 2/3] 波蘭高鐵 (PKP)：預計 2025/12/20 左右，於 PKP 官網搶購早鳥優惠票。',
+                '🏛️ [購票提醒 3/3] 奧斯威辛集中營：請務必在 [visit.auschwitz.org](https://visit.auschwitz.org/?lang=zh-tw) 提前預約，可選擇免費入場證 (時段有限) 或付費導覽團。',
+                '🚌 集中營交通：建議從 Kraków MDA Bus Station 搭乘直達巴士 (單程約 1.5-2 小時)，站名選擇 Oświęcim, Muzeum Auschwitz。',
+                '請準備歐元與波蘭幣 (PLN)', 
+                '國會大廈需提早預約，並攜帶護照登記',
+                '匈牙利與波蘭均為申根區', 
+                '2月波蘭天氣寒冷，務必保暖'
+            ]
+        }
+    };
+
+    // 美食/餐廳數據 (共用)
+    const FOOD_DATA = [
+        { name: 'Gundel Étterem', city: '布達佩斯', type: '當地美食', mapQuery: 'Gundel Étterem, Budapest' },
+        { name: 'New York Café', city: '布達佩斯', type: '咖啡/甜點', mapQuery: 'New York Café, Budapest' },
+        { name: 'Restauracja Starka', city: '克拉科夫', type: '當地美食', mapQuery: 'Restauracja Starka, Kraków' },
+        { name: 'Pierogarnia Krakowiacy', city: '克拉科夫', type: '當地美食', mapQuery: 'Pierogarnia Krakowiacy, Kraków' },
+        { name: 'Zapiecek', city: '華沙', type: '當地美食', mapQuery: 'Zapiecek, Warszawa' },
+        { name: 'Stary Dom', city: '華沙', type: '當地美食', mapQuery: 'Stary Dom, Warsaw' },
+        { name: 'Karaván Street Food', city: '布達佩斯', type: '特色小吃', mapQuery: 'Karaván Street Food, Budapest' },
+        { name: 'AïOLI Cantine', city: '華沙', type: '特色小吃', mapQuery: 'AïOLI Cantine, Warszawa' }
+    ];
+
+    // 當前選定的行程版本數據 (預設為 V1)
+    let currentItineraryData = ITINERARY_DATA_V1;
+
+</script>
+
+<div id="app" class="min-h-screen">
+    
+    <header class="sticky top-0 z-30 bg-white shadow-lg">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <h1 class="text-2xl font-bold text-emerald-600">
+                    ✈️ 匈牙利波蘭 10日 <span class="text-sm font-normal text-gray-500 hidden sm:inline-block">/ 徐先生 & 蔡小姐</span>
+                </h1>
+                <div class="flex space-x-2 sm:space-x-4">
+                    <button class="nav-item text-gray-700 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium transition duration-150 ease-in-out" data-target="overview">總覽</button>
+                    <button class="nav-item text-gray-700 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium transition duration-150 ease-in-out" data-target="details">行程詳情</button>
+                    <button class="nav-item text-gray-700 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium transition duration-150 ease-in-out" data-target="logistics">交通住宿</button>
+                    <button class="nav-item text-gray-700 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium transition duration-150 ease-in-out" data-target="foodmap">美食地圖</button>
+                    <button class="nav-item text-gray-700 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium transition duration-150 ease-in-out" data-target="prep">行前準備</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        
+        <section id="overview" class="spa-page active">
+            <h2 class="text-4xl font-extrabold text-emerald-600 mb-6 border-b-4 border-emerald-100 pb-2">📋 行程總覽 (Overall)</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="overview-content">
+                </div>
+
+            <h3 class="text-2xl font-bold text-gray-700 mt-10 mb-4 border-b-2 border-gray-100 pb-2">城市停留概覽 (最終確認天數)</h3>
+            <div class="grid grid-cols-4 gap-4 text-center">
+                <div class="p-4 bg-red-50 rounded-lg shadow">
+                    <p class="text-lg font-semibold text-red-700">Budapest 🇭🇺</p>
+                    <p class="text-sm text-gray-600">3 晚 (Day 1-3)</p>
+                </div>
+                <div class="p-4 bg-gray-50 rounded-lg shadow">
+                    <p class="text-lg font-semibold text-gray-700">Night Train 🚂</p>
+                    <p class="text-sm text-gray-600">1 晚 (Day 4)</p>
+                </div>
+                <div class="p-4 bg-amber-50 rounded-lg shadow">
+                    <p class="text-lg font-semibold text-amber-700">Kraków 🇵🇱</p>
+                    <p class="text-sm text-gray-600">3 晚 (Day 5-7)</p>
+                </div>
+                <div class="p-4 bg-emerald-50 rounded-lg shadow">
+                    <p class="text-lg font-semibold text-emerald-700">Warszawa 🇵🇱</p>
+                    <p class="text-sm text-gray-600">2 晚 (Day 8-9)</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="details" class="spa-page">
+            <h2 class="text-4xl font-extrabold text-emerald-600 mb-6 border-b-4 border-emerald-100 pb-2">📝 行程詳情 (Details)</h2>
+            <div id="version-selector-details" class="mb-6 flex space-x-4">
+                <button class="version-select-btn bg-emerald-600 text-white px-4 py-2 rounded-lg font-semibold shadow-md transition duration-150" data-version="v1">版本一：經典舒適</button>
+                <button class="version-select-btn bg-white text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-lg font-semibold border border-gray-300 transition duration-150" data-version="v2">版本二：深度人文</button>
+                <p id="current-version-name" class="text-lg font-medium text-emerald-700 self-center ml-4"></p>
+            </div>
+
+            <div class="overflow-x-auto bg-white rounded-lg shadow-xl">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-emerald-600 text-white">
+                        <tr>
+                            <th class="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">日期/城市</th>
+                            <th class="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">時間</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">行程內容</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">美食/餐飲</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">備註</th>
+                        </tr>
+                    </thead>
+                    <tbody id="itinerary-table-body" class="bg-white divide-y divide-gray-200">
+                        </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="logistics" class="spa-page">
+            <h2 class="text-4xl font-extrabold text-emerald-600 mb-6 border-b-4 border-emerald-100 pb-2">🚂 交通住宿 (Logistics)</h2>
+
+            <h3 class="text-2xl font-bold text-gray-700 mt-8 mb-4">城市間交通時間與費用比較</h3>
+            <div class="bg-white p-6 rounded-lg shadow-xl mb-8 max-w-xl mx-auto">
+                <canvas id="transportChart"></canvas>
+            </div>
+            <div class="text-center text-sm text-gray-500 mb-8">
+                *交通費用以歐元 (EUR) 計價，僅供參考。夜臥火車時間為預估。
+            </div>
+            
+            <h3 class="text-2xl font-bold text-gray-700 mb-4">住宿資訊 (已依據新天數修正)</h3>
+            <div id="accommodation-list" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                </div>
+        </section>
+
+        <section id="foodmap" class="spa-page">
+            <h2 class="text-4xl font-extrabold text-emerald-600 mb-6 border-b-4 border-emerald-100 pb-2">🍽️ 美食地圖 (Food Map)</h2>
+            
+            <div class="flex flex-wrap gap-3 mb-6">
+                <button class="food-filter bg-emerald-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-md transition duration-150 ease-in-out" data-filter="All">所有餐廳 (All)</button>
+                <button class="food-filter bg-white text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-full text-sm font-semibold border border-gray-300 transition duration-150 ease-in-out" data-filter="當地美食">當地美食</button>
+                <button class="food-filter bg-white text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-full text-sm font-semibold border border-gray-300 transition duration-150 ease-in-out" data-filter="特色小吃">特色小吃</button>
+                <button class="food-filter bg-white text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-full text-sm font-semibold border border-gray-300 transition duration-150 ease-in-out" data-filter="咖啡/甜點">咖啡/甜點</button>
+            </div>
+
+            <div id="food-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                </div>
+        </section>
+
+        <section id="prep" class="spa-page">
+            <h2 class="text-4xl font-extrabold text-emerald-600 mb-6 border-b-4 border-emerald-100 pb-2">✅ 行前準備 (Checklist)</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-xl">
+                    <h3 class="text-2xl font-bold text-gray-700 mb-4 flex items-center">
+                        <span class="text-3xl mr-2 text-red-500">🔥</span>需提前預約/購買事項
+                    </h3>
+                    <ul id="prep-tickets" class="space-y-3 text-gray-700">
+                        </ul>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-xl">
+                    <h3 class="text-2xl font-bold text-gray-700 mb-4 flex items-center">
+                        <span class="text-3xl mr-2 text-yellow-600">💡</span>重要提醒與購票指南
+                    </h3>
+                    <ul id="prep-notes" class="space-y-3 text-gray-700">
+                        </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const navItems = document.querySelectorAll('.nav-item');
+        const pages = document.querySelectorAll('.spa-page');
+        const itineraryTableBody = document.getElementById('itinerary-table-body');
+        const foodList = document.getElementById('food-list');
+        const foodFilters = document.querySelectorAll('.food-filter');
+
+        let currentVersion = 'v1'; // 儲存當前選中的版本
+
+        // --- 1. SPA 頁面切換邏輯 ---
+        
+        /**
+         * 切換頁面視圖
+         */
+        const showPage = (targetId) => {
+            // 1. 切換頁面顯示
+            pages.forEach(page => page.classList.remove('active'));
+            const targetPage = document.getElementById(targetId);
+            if (targetPage) targetPage.classList.add('active');
+
+            // 2. 更新導覽列樣式
+            navItems.forEach(item => {
+                item.classList.remove('bg-emerald-50', 'text-emerald-600', 'font-bold');
+                item.classList.add('text-gray-700');
+            });
+            const activeItem = document.querySelector(`.nav-item[data-target="${targetId}"]`);
+            if (activeItem) {
+                activeItem.classList.add('bg-emerald-50', 'text-emerald-600', 'font-bold');
+                activeItem.classList.remove('text-gray-700');
+            }
+            
+            // --- 3. 渲染特定內容 (確保版本切換時數據被刷新) ---
+            if (['details', 'logistics', 'prep', 'overview'].includes(targetId)) {
+                loadItineraryVersion(currentVersion, targetId);
+            }
+            if (targetId === 'foodmap') {
+                renderFoodList('All'); 
+            }
+        };
+
+        navItems.forEach(item => {
+            item.addEventListener('click', (e) => showPage(e.currentTarget.getAttribute('data-target')));
+        });
+
+        // --- 2. 版本切換邏輯與渲染中心 ---
+        
+        /**
+         * 載入並渲染指定版本的行程數據
+         * @param {string} version 'v1' or 'v2'
+         * @param {string} currentPage 當前頁面ID
+         */
+        const loadItineraryVersion = (version, currentPage) => {
+            const data = (version === 'v1') ? ITINERARY_DATA_V1 : ITINERARY_DATA_V2;
+            currentItineraryData = data;
+            currentVersion = version; 
+            
+            document.getElementById('current-version-name').textContent = data.name;
+
+            // 更新版本選擇器按鈕的樣式
+            document.querySelectorAll('.version-select-btn').forEach(btn => {
+                if (btn.dataset.version === version) {
+                    btn.classList.add('bg-emerald-600', 'text-white');
+                    btn.classList.remove('bg-white', 'text-gray-700', 'border-gray-300');
+                } else {
+                    btn.classList.remove('bg-emerald-600', 'text-white');
+                    btn.classList.add('bg-white', 'text-gray-700', 'border-gray-300');
+                }
+            });
+
+            // 根據當前頁面渲染對應內容
+            switch (currentPage) {
+                case 'overview':
+                    renderOverview(data);
+                    break;
+                case 'logistics':
+                    renderTransportChart(data.transitChart);
+                    renderAccommodation(data.accommodations);
+                    break;
+                case 'prep':
+                    renderPrep(data.prep);
+                    break;
+                case 'details':
+                    renderItineraryTable(data.details);
+                    break;
+            }
+        };
+
+        // 為所有版本選擇器添加事件監聽
+        const setupVersionSelectors = () => {
+            document.querySelectorAll('.version-select-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const version = e.currentTarget.dataset.version;
+                    const currentPage = Array.from(pages).find(p => p.classList.contains('active'))?.id || 'overview';
+                    loadItineraryVersion(version, currentPage);
+                });
+            });
+        }
+        setupVersionSelectors();
+
+        // --- 3. 行程總覽渲染 ---
+        const renderOverview = (data) => {
+            const overviewContent = document.getElementById('overview-content');
+            overviewContent.innerHTML = `
+                <div class="bg-white p-6 rounded-lg shadow-xl hover:shadow-2xl transition duration-300">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-3 flex items-center">
+                        <span class="text-2xl mr-2">📍</span>版本與風格
+                    </h3>
+                    <p class="mt-2 text-lg font-medium text-emerald-600">${data.name}</p>
+                    <p class="text-sm text-gray-500">${data.style}</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-xl hover:shadow-2xl transition duration-300">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-3 flex items-center">
+                        <span class="text-2xl mr-2">📅</span>日期與成員
+                    </h3>
+                    <p class="mt-2 text-lg font-medium text-gray-900">${TRIP_INFO.dates} (${TRIP_INFO.duration})</p>
+                    <p class="text-lg font-medium text-gray-900">${TRIP_INFO.members}</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-xl hover:shadow-2xl transition duration-300">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-3 flex items-center">
+                        <span class="text-2xl mr-2">🚂</span>主要交通
+                    </h3>
+                    <p class="mt-2 text-lg font-medium text-gray-900">${data.transport}</p>
+                    <p class="text-sm text-red-600">版本預算：${data === ITINERARY_DATA_V1 ? '中高 (V1)' : '中 (V2)'}</p>
+                </div>
+            `;
+        }
+
+
+        // --- 4. 行程詳情 (表格) 渲染 (核心修復邏輯: 確保 TR 標籤完整) ---
+        const renderItineraryTable = (data) => {
+            let html = '';
+            
+            const groupedData = data.reduce((acc, item) => {
+                const day = item.day;
+                if (!acc[day]) acc[day] = [];
+                acc[day].push(item);
+                return acc;
+            }, {});
+
+            for (const day in groupedData) {
+                const activities = groupedData[day];
+                const rowCount = activities.length;
+                
+                activities.forEach((item, index) => {
+                    const isFirstRowOfDay = index === 0;
+                    // 使用 item.mapQuery 作為地圖搜尋的精準查詢
+                    const mapLinkQuery = item.mapQuery.split(' from ')[0].trim();
+                    const mapLink = createMapLink(mapLinkQuery);
+                    
+                    // 區隔顏色：Day 1-4 (匈牙利) 用紅色系, Day 5-7 (克拉科夫) 用黃色系, Day 8-10 (華沙) 用綠色系
+                    let bgColor = 'bg-white';
+                    let borderColor = 'border-gray-200';
+                    let cityColor = 'text-gray-600';
+                    if (isFirstRowOfDay) {
+                        if (day >= 1 && day <= 4) { // Day 1-3 布達佩斯, Day 4 夜臥
+                            bgColor = day == 4 ? 'bg-gray-100' : 'bg-red-50'; 
+                            borderColor = day == 4 ? 'border-gray-300' : 'border-red-300';
+                            cityColor = day == 4 ? 'text-gray-700' : 'text-red-700';
+                        } else if (day >= 5 && day <= 7) { // Day 5-7 克拉科夫
+                            bgColor = 'bg-amber-50'; borderColor = 'border-amber-300'; cityColor = 'text-amber-700';
+                        } else { // Day 8-10 華沙
+                            bgColor = 'bg-emerald-50'; borderColor = 'border-emerald-300'; cityColor = 'text-emerald-700';
+                        }
+                    }
+
+                    const rowClass = isFirstRowOfDay 
+                        ? `border-t-4 ${borderColor} ${bgColor} hover:${bgColor}` 
+                        : `hover:bg-gray-50`;
+
+                    // 使用 rowHtml 變數來組裝單行 HTML，確保 TR 標籤的開合是完整的。
+                    let rowHtml = `<tr class="${rowClass} transition duration-150">`;
+                    
+                    // 日期/城市欄位 (Rowspan)
+                    if (isFirstRowOfDay) {
+                        rowHtml += `
+                            <td class="px-3 py-3 text-sm font-medium text-gray-900 align-top" rowspan="${rowCount}">
+                                <span class="block font-bold text-lg text-emerald-800">Day ${item.day}</span>
+                                <span class="block font-semibold">${item.date}</span>
+                                <span class="block ${cityColor} font-semibold">${item.city.split('(')[0].trim()}</span>
+                            </td>
+                        `;
+                    }
+                    
+                    // 渲染行程時間、內容、餐飲、備註
+                    rowHtml += `
+                        <td class="px-3 py-3 whitespace-nowrap text-sm text-gray-500 font-semibold align-top">
+                            ${item.category}
+                        </td>
+                        <td class="px-6 py-3 text-sm text-gray-900 align-top">
+                            ${item.content}
+                            <a href="${mapLink}" target="_blank" class="text-blue-500 hover:text-blue-700 text-xs ml-2">[Google Map]</a>
+                        </td>
+                        <td class="px-6 py-3 whitespace-normal text-sm text-gray-500 align-top">${item.meal}</td>
+                        <td class="px-6 py-3 whitespace-normal text-sm text-gray-500 align-top">${item.notes}</td>
+                    `;
+                    
+                    rowHtml += `</tr>`; // 確保 TR 標籤正確閉合
+                    html += rowHtml;
+                });
+            }
+            itineraryTableBody.innerHTML = html;
+        };
+
+        // --- 5. 交通住宿 (Chart.js) 渲染 ---
+        let transportChartInstance = null;
+        const renderTransportChart = (chartData) => {
+            const ctx = document.getElementById('transportChart')?.getContext('2d');
+            if (!ctx) return;
+
+            if (transportChartInstance) transportChartInstance.destroy();
+
+            transportChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: chartData.labels,
+                    datasets: [
+                        {
+                            label: '預估時間 (小時)',
+                            data: chartData.times,
+                            backgroundColor: 'rgba(5, 150, 105, 0.8)', // 綠色 (Emerald-600)
+                            yAxisID: 'time',
+                        },
+                        {
+                            label: '預估費用 (歐元/人)',
+                            data: chartData.costs,
+                            backgroundColor: 'rgba(59, 130, 246, 0.8)', // 藍色 (Blue-500)
+                            yAxisID: 'cost',
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'top' },
+                        tooltip: { callbacks: { label: function(c) {
+                            let label = c.dataset.label + ': ';
+                            label += c.dataset.yAxisID === 'time' ? c.parsed.y + ' 小時' : '€ ' + c.parsed.y;
+                            return label;
+                        }}}
+                    },
+                    scales: {
+                        time: { type: 'linear', position: 'left', title: { display: true, text: '時間 (小時)' }, min: 0 },
+                        cost: { type: 'linear', position: 'right', title: { display: true, text: '費用 (歐元)' }, grid: { drawOnChartArea: false }, min: 0 }
+                    }
+                }
+            });
+        };
+
+        // --- 6. 住宿資訊渲染 ---
+        const renderAccommodation = (accommodations) => {
+            const accommodationList = document.getElementById('accommodation-list');
+            let html = '';
+            accommodations.forEach(acc => {
+                // 使用不同顏色區隔國家
+                let colorClass = 'bg-emerald-50 text-emerald-700';
+                if (acc.city === 'Budapest') colorClass = 'bg-red-50 text-red-700';
+                if (acc.city === 'Kraków') colorClass = 'bg-amber-50 text-amber-700';
+
+                html += `
+                    <div class="p-6 rounded-lg shadow ${colorClass}">
+                        <p class="text-lg font-semibold">${acc.city}</p>
+                        <a href="${createMapLink(acc.mapQuery)}" target="_blank" class="text-blue-600 hover:text-blue-800 font-medium">${acc.name}</a>
+                        <p class="text-sm text-gray-600 mt-2">住宿：${acc.duration}</p>
+                        ${acc.city === 'Warszawa' ? `<p class="text-xs text-gray-500 mt-1">地址 (精準地圖): ${acc.mapQuery}</p>` : ''}
+                    </div>
+                `;
+            });
+            accommodationList.innerHTML = html;
+        }
+
+
+        // --- 7. 美食地圖 (篩選) 渲染 ---
+        const renderFoodList = (filter) => {
+            let html = '';
+            foodList.innerHTML = '';
+
+            const filteredData = filter === 'All' 
+                ? FOOD_DATA 
+                : FOOD_DATA.filter(food => food.type === filter);
+
+            filteredData.forEach(food => {
+                const mapLink = createMapLink(food.mapQuery);
+                let color = food.type === '當地美食' ? 'border-red-500' : (food.type === '特色小吃' ? 'border-amber-500' : 'border-pink-500');
+                html += `
+                    <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition duration-300 border-t-4 ${color}">
+                        <h4 class="text-lg font-semibold text-gray-900">${food.name}</h4>
+                        <p class="text-sm text-gray-500">${food.city} / ${food.type}</p>
+                        <a href="${mapLink}" target="_blank" class="mt-2 inline-flex items-center text-blue-600 hover:text-blue-800 text-sm font-medium">
+                            在地圖上查看 🗺️
+                        </a>
+                    </div>
+                `;
+            });
+            foodList.innerHTML = html;
+
+            // 更新篩選器按鈕樣式
+            foodFilters.forEach(btn => {
+                if (btn.getAttribute('data-filter') === filter) {
+                    btn.classList.add('bg-emerald-600', 'text-white');
+                    btn.classList.remove('bg-white', 'text-gray-700', 'border-gray-300');
+                } else {
+                    btn.classList.remove('bg-emerald-600', 'text-white');
+                    btn.classList.add('bg-white', 'text-gray-700', 'border-gray-300');
+                }
+            });
+        };
+
+        foodFilters.forEach(btn => {
+            btn.addEventListener('click', (e) => renderFoodList(e.currentTarget.getAttribute('data-filter')));
+        });
+
+        // --- 8. 行前準備渲染 ---
+        const renderPrep = (prepData) => {
+            const prepTickets = document.getElementById('prep-tickets');
+            const prepNotes = document.getElementById('prep-notes');
+            
+            prepTickets.innerHTML = prepData.tickets.map(item => {
+                const mapQuery = item.replace(/\(.*\)/, '').trim().replace('⚠️', '').trim(); // 移除括號內的內容和警示符
+                let mapLink = createMapLink(mapQuery);
+                const isTrainTicket = item.includes('火車票');
+                
+                // 奧斯威辛集中營使用官方連結
+                if (item.includes('奧斯威辛集中營門票')) {
+                     mapLink = 'https://visit.auschwitz.org/?lang=zh-tw';
+                }
+
+                return `
+                    <li class="flex items-start">
+                        <span class="mr-2 text-xl text-red-600">▪️</span>
+                        <div>
+                            <p class="font-semibold">${item}</p>
+                            ${isTrainTicket ? '' : `<a href="${mapLink}" target="_blank" class="text-blue-600 text-sm hover:underline">購票/地點連結</a>`}
+                        </div>
+                    </li>
+                `;
+            }).join('');
+
+            prepNotes.innerHTML = prepData.notes.map(note => `
+                <li class="flex items-start">
+                    <span class="mr-2 text-xl ${note.includes('購票提醒') || note.includes('集中營交通') ? 'text-blue-600' : 'text-yellow-600'}">${note.includes('購票提醒') ? '➡️' : (note.includes('集中營交通') ? '🚌' : '▪️')}</span>
+                    <p class="text-gray-700 font-medium">${note}</p>
+                </li>
+            `).join('');
+        }
+
+        // --- 9. 強制初始化啟動流程 (預設 V1) ---
+        loadItineraryVersion('v1', 'overview'); // 初始化所有 V1 數據
+        renderFoodList('All'); // 初始化美食地圖
+        showPage('overview'); // 最終顯示 '總覽' 頁面
+    });
+</script>
+
+</body>
+</html>
